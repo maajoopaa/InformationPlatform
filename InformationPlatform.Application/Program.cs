@@ -1,3 +1,4 @@
+using InformationPlatform.Application.Helpers;
 using InformationPlatform.Database;
 using InformationPlatform.Repository;
 using InformationPlatform.Repository.Repositories;
@@ -11,7 +12,9 @@ builder.Services.AddSwaggerGen();
 
 //Database
 builder.Services.AddDbContext<InformationPlatformDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options
+        .UseLazyLoadingProxies()
+        .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Repositories
 builder.Services.AddTransient<IChatsRepository, ChatsRepository>();
@@ -25,6 +28,9 @@ builder.Services.AddTransient<IUserSettingsRepository, UserSettingsRepository>()
 
 //Unit of work
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+//Automapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
