@@ -13,4 +13,8 @@ public class DbPost : BaseDbEntityWithId
     public virtual List<DbLike> Likes { get; set; } = [];
     
     public virtual List<DbComment> Comments { get; set; } = [];
+
+    public Guid CreatedById { get; set; }
+    
+    public virtual DbUser CreatedBy { get; set; } = null!;
 }
