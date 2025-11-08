@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformationPlatform.Databas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformationPlatform.Protocol", "InformationPlatform.Protocol\InformationPlatform.Protocol.csproj", "{CD7560BC-1622-4F8A-B93B-7FB1C891E3DB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{BE2E5B73-FA6B-49E5-AED3-C50E2ACF114A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Templates", "Templates\Templates.csproj", "{829E994A-B299-4F3C-BD0E-5972BABE9CFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,12 @@ Global
 		{CD7560BC-1622-4F8A-B93B-7FB1C891E3DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD7560BC-1622-4F8A-B93B-7FB1C891E3DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD7560BC-1622-4F8A-B93B-7FB1C891E3DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829E994A-B299-4F3C-BD0E-5972BABE9CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829E994A-B299-4F3C-BD0E-5972BABE9CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829E994A-B299-4F3C-BD0E-5972BABE9CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829E994A-B299-4F3C-BD0E-5972BABE9CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{829E994A-B299-4F3C-BD0E-5972BABE9CFB} = {BE2E5B73-FA6B-49E5-AED3-C50E2ACF114A}
 	EndGlobalSection
 EndGlobal
