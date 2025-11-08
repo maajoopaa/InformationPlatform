@@ -1,0 +1,7 @@
+﻿services:
+  informationplatform.application:
+    image: informationplatform.application
+    build:
+      context: .
+      dockerfile: InformationPlatform.Application/Dockerfile
+
