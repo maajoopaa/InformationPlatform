@@ -6,6 +6,7 @@ using InformationPlatform.Repository;
 using InformationPlatform.Repository.Repositories;
 using InformationPlatform.Repository.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,14 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 //Automapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+//Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()               
+    .WriteTo.Console()         
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
