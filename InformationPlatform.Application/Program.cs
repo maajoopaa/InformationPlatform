@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using InformationPlatform.Application.Helpers;
 using InformationPlatform.Database;
 using InformationPlatform.Repository;
