@@ -1,5 +1,6 @@
 using FluentValidation.AspNetCore;
 using InformationPlatform.Application.Helpers;
+using InformationPlatform.Application.Middlewares;
 using InformationPlatform.Database;
 using InformationPlatform.Repository;
 using InformationPlatform.Repository.Repositories;
@@ -34,6 +35,9 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
+
+app.UseRouting();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
