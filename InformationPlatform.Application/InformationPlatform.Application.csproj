@@ -26,4 +26,12 @@
       <ProjectReference Include="..\InformationPlatform.Repository\InformationPlatform.Repository.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Business\Interfaces\" />
+      <Folder Include="Controllers\" />
+      <Folder Include="Helpers\" />
+      <Folder Include="Models\Requests\" />
+      <Folder Include="Models\Responses\" />
+    </ItemGroup>
+
 </Project>
