@@ -169,7 +169,7 @@ namespace InformationPlatform.Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("DbUserId")
+                    b.Property<Guid>("CreatedById")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -178,7 +178,7 @@ namespace InformationPlatform.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DbUserId");
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Posts");
                 });
@@ -323,9 +323,13 @@ namespace InformationPlatform.Database.Migrations
 
             modelBuilder.Entity("InformationPlatform.Domain.Models.DbPost", b =>
                 {
-                    b.HasOne("InformationPlatform.Domain.Models.DbUser", null)
+                    b.HasOne("InformationPlatform.Domain.Models.DbUser", "CreatedBy")
                         .WithMany("Posts")
-                        .HasForeignKey("DbUserId");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("InformationPlatform.Domain.Models.DbUser", b =>
