@@ -1,0 +1,16 @@
+﻿namespace InformationPlatform.Application.Models;
+
+public class UserDto
+{
+    public string Username { get; set; } = null!;
+
+    public string FirstName { get; set; } = null!;
+    
+    public string LastName { get; set; } = null!;
+    
+    public DateTime LastLogin { get; set; }
+    
+    public DateTime BirthDate { get; set; }
+
+    public UserSettingsDto? UserSettings { get; set; }
+}
