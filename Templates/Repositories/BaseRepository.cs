@@ -23,6 +23,12 @@ public class BaseRepository<TEntity, TContext> : IBaseRepository<TEntity>
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task AddRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
+    {
+        await DbSet.AddRangeAsync(entities, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
     public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         DbSet.Update(entity);
@@ -35,9 +41,15 @@ public class BaseRepository<TEntity, TContext> : IBaseRepository<TEntity>
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public virtual async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
+    public async Task DeleteRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
     {
-        return await DbSet.Where(predicate).ToListAsync(cancellationToken);
+        DbSet.RemoveRange(entities);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public virtual async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? predicate, CancellationToken cancellationToken)
+    {
+        return await DbSet.Where(predicate ?? (entity => true)).ToListAsync(cancellationToken);
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
