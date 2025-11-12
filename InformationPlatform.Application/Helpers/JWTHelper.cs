@@ -14,7 +14,7 @@ public class JWTHelper
         _configuration = configuration;
     }
     
-    public string GenerateToken(int userId, string username)
+    public string GenerateToken(Guid userId, string username)
     {
         var jwt = _configuration.GetSection("Jwt");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"] ?? ""));
