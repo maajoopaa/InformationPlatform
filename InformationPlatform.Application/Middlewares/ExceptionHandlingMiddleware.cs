@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using InformationPlatform.Application.Exceptions;
 
 namespace InformationPlatform.Application.Middlewares;
 
@@ -20,26 +21,27 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
+        catch (NotFoundException ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            
+            await HandleExceptionAsync(context, ex.Message,ex.StatusCode);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
             
-            await HandleExceptionAsync(context, ex);
+            await HandleExceptionAsync(context, ex.Message, 500);
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static Task HandleExceptionAsync(HttpContext context, string errorMessage, int statusCode)
     {
         var response = context.Response;
         response.ContentType = "application/json";
 
-        response.StatusCode = exception switch
-        {
-            ArgumentException => (int)HttpStatusCode.BadRequest,
-            KeyNotFoundException => (int)HttpStatusCode.NotFound,
-            _ => (int)HttpStatusCode.InternalServerError
-        };
+        response.StatusCode = statusCode;
 
-        return response.WriteAsync(exception.Message);
+        return response.WriteAsync(errorMessage);
     }
 }
