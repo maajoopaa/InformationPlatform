@@ -23,4 +23,13 @@ public class InformationPlatformDbContext : DbContext
     public DbSet<DbUser> Users { get; set; }
     
     public DbSet<DbUserSettings> UserSettings { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DbUser>()
+            .HasIndex(x => x.Username)
+            .IsUnique();
+        
+        base.OnModelCreating(modelBuilder);
+    }
 }
