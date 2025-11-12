@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InformationPlatform.Application.Models;
+using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 
 namespace InformationPlatform.Application.Helpers;
@@ -8,6 +9,12 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        CreateMap<CreateUserRequest, DbUser>();
+        
+        CreateMap<AddCommentRequest, DbComment>();
+
+        CreateMap<AddLikeRequest,DbLike>();
+        
         CreateMap<DbUser, UserDto>()
             .ForMember(x => x.UserSettings, x => x.MapFrom(y => y.UserSettings));
         
