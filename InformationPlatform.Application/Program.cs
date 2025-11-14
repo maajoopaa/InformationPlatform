@@ -1,5 +1,7 @@
 using System.Text;
 using FluentValidation.AspNetCore;
+using InformationPlatform.Application.Business;
+using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Helpers;
 using InformationPlatform.Application.Middlewares;
 using InformationPlatform.Database;
@@ -13,6 +15,8 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
 
 //Swagger
 builder.Services
@@ -95,6 +99,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+
+//Services
+builder.Services.AddTransient<IAuthorizationBusinessService, AuthorizationBusinessService>();
+builder.Services.AddTransient<IChatsBusinessService, ChatsBusinessService>();
+builder.Services.AddTransient<ICommentsBusinessService, CommentsBusinessService>();
+builder.Services.AddTransient<IImagesBusinessService, ImagesBusinessService>();
+builder.Services.AddTransient<ILikesBusinessService, LikesBusinessService>();
+builder.Services.AddTransient<IMessagesBusinessService, MessagesBusinessService>();
+builder.Services.AddTransient<IPostsBusinessService, PostsBusinessService>();
+builder.Services.AddTransient<IUsersBusinessService, UsersBusinessService>();
+builder.Services.AddTransient<IUserSettingsBusinessService, UserSettingsBusinessService>();
 
 var app = builder.Build();
 
