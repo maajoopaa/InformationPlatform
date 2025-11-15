@@ -27,6 +27,12 @@ public class ExceptionHandlingMiddleware
             
             await HandleExceptionAsync(context, ex.Message,ex.StatusCode);
         }
+        catch (NoPermissionException ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            
+            await HandleExceptionAsync(context, ex.Message,ex.StatusCode);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
