@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Exceptions;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
@@ -14,15 +15,18 @@ public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IImagesBusinessService _imagesBusinessService;
+    private readonly IPermissionsService _permissionsService;
 
     public PostsBusinessService(
         IUnitOfWork unitOfWork, 
         IMapper mapper, IImagesBusinessService imagesBusinessService,
-        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IPermissionsService permissionsService) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _imagesBusinessService = imagesBusinessService;
+        _permissionsService = permissionsService;
     }
     
     public async Task<List<PostDto>> GetPostsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
@@ -58,6 +62,14 @@ public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
 
     public async Task DeletePostAsync(Guid postId, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("post", UserId, postId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Delete))
+        {
+            throw new NoPermissionException("Вы не можете удалить пост, который вам не принадлежит.");
+        }
+        
         var postEntity = await _unitOfWork.Posts.GetByIdAsync(postId, cancellationToken);
 
         if (postEntity == null)

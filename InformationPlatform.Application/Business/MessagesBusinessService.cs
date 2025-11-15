@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Exceptions;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
@@ -14,20 +15,31 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IImagesBusinessService _imagesBusinessService;
+    private readonly IPermissionsService _permissionsService;
 
     public MessagesBusinessService(
         IUnitOfWork unitOfWork,
         IMapper mapper,
         IImagesBusinessService imagesBusinessService,
-        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IPermissionsService permissionsService) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _imagesBusinessService = imagesBusinessService;
+        _permissionsService = permissionsService;
     }
     
     public async Task<List<MessageDto>> GetMessagesByChatIdAsync(Guid chatId, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("chat", UserId, chatId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Read))
+        {
+            throw new NoPermissionException("Вы не можете просмотреть сообщения чата, в котором не состоите.");
+        }
+        
         var messageEntities = await _unitOfWork.Messages
             .GetAsync(x => x.ChatId == chatId, cancellationToken);
         
@@ -36,6 +48,14 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
 
     public async Task AddMessageAsync(SendMessageRequest request, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("chat", UserId, request.ChatId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Write))
+        {
+            throw new NoPermissionException("Вы не можете добавить сообщение в чат, в котором не состоите.");
+        }
+        
         var chatEntity = await _unitOfWork.Chats.GetByIdAsync(request.ChatId, cancellationToken);
 
         if (chatEntity == null)
@@ -61,6 +81,17 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
     {
         var messageEntities = await _unitOfWork.Messages
             .GetAsync(x =>  messageIds.Contains(x.Id), cancellationToken);
+
+        foreach (var messageEntity in messageEntities)
+        {
+            var userPermissions = await _permissionsService
+                .GetUserPermissionsAsync("message", UserId, messageEntity.Id, cancellationToken);
+        
+            if(!userPermissions.Contains(PermissionTypes.Delete))
+            {
+                throw new NoPermissionException("Вы не можете удалить сообщение, которое вам не приналежит.");
+            }
+        }
         
         await _unitOfWork.Messages.DeleteRangeAsync(messageEntities, cancellationToken);
     }

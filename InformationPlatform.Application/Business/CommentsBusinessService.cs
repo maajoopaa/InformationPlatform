@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Exceptions;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
@@ -13,14 +14,17 @@ public class CommentsBusinessService :BaseBusinessService, ICommentsBusinessServ
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPermissionsService _permissionsService;
 
     public CommentsBusinessService(
         IUnitOfWork unitOfWork, 
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IPermissionsService permissionsService) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _permissionsService = permissionsService;
     }
     
     public async Task<List<CommentDto>> GetCommentsByPostIdAsync(Guid postId, CancellationToken cancellationToken)

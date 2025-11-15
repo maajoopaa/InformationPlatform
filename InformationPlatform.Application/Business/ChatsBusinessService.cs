@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Exceptions;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
@@ -13,18 +14,29 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPermissionsService _permissionsService;
 
     public ChatsBusinessService(
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IPermissionsService permissionsService) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _permissionsService = permissionsService;
     }
     
     public async Task<List<ChatDto>> GetChatsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("user", UserId, userId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Read))
+        {
+            throw new NoPermissionException("Вы не можете просмотреть чаты другого пользователя.");
+        }
+        
         var chatEntities = await _unitOfWork.Chats
             .GetAsync(x => x.Participants.Any(y => y.Id == userId), cancellationToken);
 
@@ -33,10 +45,13 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
 
     public async Task AddChatAsync(CreateChatRequest request, CancellationToken cancellationToken)
     {
+        request.ParticipantIds.Add(UserId);
+        
         var chat = new DbChat
         {
             Title = request.Title,
-            IsGroup = request.IsGroup
+            IsGroup = request.IsGroup,
+            
         };
 
         var participants = await _unitOfWork.Users.GetAsync(
@@ -51,6 +66,14 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
 
     public async Task UpdateChatAsync(Guid chatId, UpdateChatRequest request, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("chat", UserId, chatId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Write))
+        {
+            throw new NoPermissionException("Вы не можете изменить информацию чата, в котором не состоите.");
+        }
+        
         var chatEntity = await _unitOfWork.Chats.GetByIdAsync(chatId, cancellationToken);
 
         if (chatEntity == null)
@@ -68,12 +91,31 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
     {
         var chatEntities = await _unitOfWork.Chats
             .GetAsync(x => ids.Contains(x.Id), cancellationToken);
+
+        foreach (var chatEntity in chatEntities)
+        {
+            var userPermissions = await _permissionsService
+                .GetUserPermissionsAsync("chat", UserId, chatEntity.Id, cancellationToken);
+        
+            if(!userPermissions.Contains(PermissionTypes.Delete))
+            {
+                throw new NoPermissionException("Вы не можете удалить чат, в котором не состоите.");
+            }
+        }
         
         await _unitOfWork.Chats.DeleteRangeAsync(chatEntities, cancellationToken);
     }
 
     public async Task AddParticipantsAsync(Guid chatId, List<Guid> participantIds, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("chat", UserId, chatId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Write))
+        {
+            throw new NoPermissionException("Вы не можете изменить информацию чата, в котором не состоите.");
+        }
+        
         var chatEntity = await _unitOfWork.Chats.GetByIdAsync(chatId, cancellationToken);
 
         if (chatEntity == null)

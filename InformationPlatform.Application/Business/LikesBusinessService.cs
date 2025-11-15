@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Exceptions;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
@@ -13,14 +14,17 @@ public class LikesBusinessService :BaseBusinessService, ILikesBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPermissionsService _permissionsService;
 
     public LikesBusinessService(
         IUnitOfWork unitOfWork, 
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IPermissionsService permissionsService) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _permissionsService = permissionsService;
     }
     
     public async Task<List<LikeDto>> GetLikesByPostIdAsync(Guid postId, CancellationToken cancellationToken)
@@ -48,6 +52,14 @@ public class LikesBusinessService :BaseBusinessService, ILikesBusinessService
 
     public async Task DeleteLikeAsync(Guid likeId, CancellationToken cancellationToken)
     {
+        var userPermissions = await _permissionsService
+            .GetUserPermissionsAsync("like", UserId, likeId, cancellationToken);
+        
+        if(!userPermissions.Contains(PermissionTypes.Delete))
+        {
+            throw new NoPermissionException("Вы не можете убрать лайк, который вам не принадлежит.");
+        }
+        
         var likeEntity = await _unitOfWork.Likes.GetByIdAsync(likeId, cancellationToken);
 
         if (likeEntity == null)
