@@ -1,8 +1,8 @@
 using System.Text;
-using FluentValidation.AspNetCore;
 using InformationPlatform.Application.Business;
 using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Helpers;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Middlewares;
 using InformationPlatform.Database;
 using InformationPlatform.Repository;
@@ -110,6 +110,9 @@ builder.Services.AddTransient<IMessagesBusinessService, MessagesBusinessService>
 builder.Services.AddTransient<IPostsBusinessService, PostsBusinessService>();
 builder.Services.AddTransient<IUsersBusinessService, UsersBusinessService>();
 builder.Services.AddTransient<IUserSettingsBusinessService, UserSettingsBusinessService>();
+builder.Services.AddTransient<IPermissionsService, PermissionsService>();
+
+
 
 var app = builder.Build();
 
