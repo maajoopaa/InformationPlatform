@@ -80,7 +80,7 @@ public class PermissionsService : IPermissionsService
                     return  _allPermissionsList;
                 }
 
-                return [PermissionTypes.Read];
+                return [];
             default:
                 return [];
         }
