@@ -50,7 +50,8 @@ public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
         var postEntity = new DbPost
         {
             Title = request.Title,
-            BodyHtml = request.BodyHtml
+            BodyHtml = request.BodyHtml,
+            CreatedById = UserId
         };
 
         var imageEntities = await _imagesBusinessService.AddImagesAsync(request.Images, cancellationToken);
