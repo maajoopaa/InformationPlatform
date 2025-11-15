@@ -6,15 +6,19 @@ using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
 using InformationPlatform.Repository.Repositories.Interfaces;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class UsersBusinessService : IUsersBusinessService
+public class UsersBusinessService :BaseBusinessService, IUsersBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UsersBusinessService(IUnitOfWork unitOfWork, IMapper mapper)
+    public UsersBusinessService(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

@@ -5,15 +5,19 @@ using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class CommentsBusinessService : ICommentsBusinessService
+public class CommentsBusinessService :BaseBusinessService, ICommentsBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CommentsBusinessService(IUnitOfWork unitOfWork, IMapper mapper)
+    public CommentsBusinessService(
+        IUnitOfWork unitOfWork, 
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

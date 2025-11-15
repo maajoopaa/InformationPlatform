@@ -5,16 +5,20 @@ using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class PostsBusinessService : IPostsBusinessService
+public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IImagesBusinessService _imagesBusinessService;
 
-    public PostsBusinessService(IUnitOfWork unitOfWork, IMapper mapper, IImagesBusinessService imagesBusinessService)
+    public PostsBusinessService(
+        IUnitOfWork unitOfWork, 
+        IMapper mapper, IImagesBusinessService imagesBusinessService,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

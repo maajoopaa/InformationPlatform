@@ -6,16 +6,21 @@ using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class AuthorizationBusinessService : IAuthorizationBusinessService
+public class AuthorizationBusinessService :BaseBusinessService, IAuthorizationBusinessService
 {
     private readonly JWTHelper _jwtHelper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public AuthorizationBusinessService(JWTHelper jwtHelper,IUnitOfWork unitOfWork, IMapper mapper)
+    public AuthorizationBusinessService(
+        JWTHelper jwtHelper,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _jwtHelper = jwtHelper;
         _unitOfWork = unitOfWork;

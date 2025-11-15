@@ -5,15 +5,19 @@ using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class LikesBusinessService : ILikesBusinessService
+public class LikesBusinessService :BaseBusinessService, ILikesBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public LikesBusinessService(IUnitOfWork unitOfWork, IMapper mapper)
+    public LikesBusinessService(
+        IUnitOfWork unitOfWork, 
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

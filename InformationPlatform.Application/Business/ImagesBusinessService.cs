@@ -3,15 +3,19 @@ using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class ImagesBusinessService : IImagesBusinessService
+public class ImagesBusinessService : BaseBusinessService, IImagesBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ImagesBusinessService(IUnitOfWork unitOfWork, IMapper mapper)
+    public ImagesBusinessService(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

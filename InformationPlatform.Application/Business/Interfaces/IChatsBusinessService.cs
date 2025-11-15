@@ -1,9 +1,10 @@
 ﻿using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business.Interfaces;
 
-public interface IChatsBusinessService
+public interface IChatsBusinessService : IBaseBusinessService
 {
     Task<List<ChatDto>> GetChatsByUserIdAsync(Guid userId, CancellationToken cancellationToken);
     Task AddChatAsync(CreateChatRequest request, CancellationToken cancellationToken);

@@ -5,15 +5,19 @@ using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using InformationPlatform.Domain.Models;
 using InformationPlatform.Repository;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business;
 
-public class ChatsBusinessService : IChatsBusinessService
+public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ChatsBusinessService(IUnitOfWork unitOfWork, IMapper mapper)
+    public ChatsBusinessService(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

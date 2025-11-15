@@ -1,9 +1,10 @@
 ﻿using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using Templates.Business;
 
 namespace InformationPlatform.Application.Business.Interfaces;
 
-public interface ILikesBusinessService
+public interface ILikesBusinessService : IBaseBusinessService
 {
     Task<List<LikeDto>> GetLikesByPostIdAsync(Guid postId, CancellationToken cancellationToken);
     Task AddLikeAsync(AddLikeRequest request, CancellationToken cancellationToken);
