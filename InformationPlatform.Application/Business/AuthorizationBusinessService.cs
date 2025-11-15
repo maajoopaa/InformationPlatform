@@ -44,7 +44,18 @@ public class AuthorizationBusinessService : IAuthorizationBusinessService
     {
         var userEntity = _mapper.Map<DbUser>(request);
         userEntity.PasswordHash = PasswordHasher.HashPassword(request.Password);
+        userEntity.DateOfCreation = DateTime.UtcNow;
+        userEntity.LastLogin = DateTime.UtcNow;
 
+        var userSettings = new DbUserSettings
+        {
+            Theme = Themes.Dark
+        };
+
+        await _unitOfWork.UserSettings.AddAsync(userSettings, cancellationToken);
+
+        userEntity.UserSettingsId = userSettings.Id;
+        
         try
         {
             await _unitOfWork.Users.AddAsync(userEntity,cancellationToken);
