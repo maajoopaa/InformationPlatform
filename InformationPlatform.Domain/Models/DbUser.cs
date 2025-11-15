@@ -28,5 +28,5 @@ public class DbUser : BaseDbEntityWithId
     
     public Guid UserSettingsId { get; set; }
 
-    public virtual DbUserSettings? UserSettings { get; set; }
+    public virtual DbUserSettings UserSettings { get; set; } = null!;
 }

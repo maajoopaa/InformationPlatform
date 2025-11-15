@@ -6,7 +6,7 @@ public class DbChat : BaseDbEntityWithId
 {
     public string? Title { get; set; }
 
-    public bool IsGroup { get; set; } = false;
+    public bool IsGroup { get; set; }
     
     public virtual List<DbUser> Participants { get; set; } = [];
 
