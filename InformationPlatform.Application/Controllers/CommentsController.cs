@@ -1,6 +1,7 @@
 ﻿using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationPlatform.Application.Controllers;
@@ -16,7 +17,7 @@ public class CommentsController : ControllerBase
         _service = service;
     }
 
-    [HttpPost]
+    [HttpPost,Authorize]
     public async Task<IActionResult> AddAsync([FromBody] AddCommentRequest request, CancellationToken cancellationToken)
     {
         await _service.AddCommentAsync(request, cancellationToken);

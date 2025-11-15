@@ -1,6 +1,7 @@
 ﻿using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationPlatform.Application.Controllers;
@@ -48,7 +49,7 @@ public class PostsController : ControllerBase
         return Ok(posts);
     }
 
-    [HttpPost]
+    [HttpPost,Authorize]
     public async Task<IActionResult> AddAsync([FromBody] CreatePostRequest request, CancellationToken cancellationToken)
     {
         await _postsService.AddPostAsync(request, cancellationToken);
@@ -56,7 +57,7 @@ public class PostsController : ControllerBase
         return Created();
     }
 
-    [HttpDelete("{postId:guid}")]
+    [HttpDelete("{postId:guid}"),Authorize]
     public async Task<IActionResult> DeleteAsync(Guid postId, CancellationToken cancellationToken)
     {
         await _postsService.DeletePostAsync(postId, cancellationToken);

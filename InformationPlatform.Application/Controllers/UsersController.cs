@@ -1,6 +1,7 @@
 ﻿using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationPlatform.Application.Controllers;
@@ -23,7 +24,7 @@ public class UsersController : ControllerBase
         _postsService = postsService;
     }
 
-    [HttpPut("{userId:guid}/settings")]
+    [HttpPut("{userId:guid}/settings"),Authorize]
     public async Task<IActionResult> UpdateUserSettingsAsync(Guid userId, [FromBody] UpdateUserSettingsRequest request,
         CancellationToken cancellationToken)
     {
@@ -32,7 +33,7 @@ public class UsersController : ControllerBase
         return NoContent();
     }
     
-    [HttpGet("{userId:guid}/chats")]
+    [HttpGet("{userId:guid}/chats"),Authorize]
     public async Task<ActionResult<List<ChatDto>>> GetChatsAsync(Guid userId, CancellationToken cancellationToken)
     {
         var chats = await _chatsService.GetChatsByUserIdAsync(userId, cancellationToken);

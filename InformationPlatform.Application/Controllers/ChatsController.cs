@@ -1,23 +1,30 @@
 ﻿using InformationPlatform.Application.Business.Interfaces;
+using InformationPlatform.Application.Helpers.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using InformationPlatform.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationPlatform.Application.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("chats")]
 public class ChatsController : ControllerBase
 {
     private readonly IChatsBusinessService _chatsService;
     private readonly IMessagesBusinessService _messagesService;
+    private readonly IPermissionsService _permissionsService;
 
     public ChatsController(
         IChatsBusinessService chatsService,
-        IMessagesBusinessService messagesService)
+        IMessagesBusinessService messagesService,
+        IPermissionsService permissionsService)
     {
         _chatsService = chatsService;
         _messagesService = messagesService;
+        _permissionsService = permissionsService;
     }
     
     [HttpGet("{chatId:guid}/messages")]

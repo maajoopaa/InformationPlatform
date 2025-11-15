@@ -1,10 +1,12 @@
 ﻿using InformationPlatform.Application.Business.Interfaces;
 using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationPlatform.Application.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("messages")]
 public class MessagesController : ControllerBase
