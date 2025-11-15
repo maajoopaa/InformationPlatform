@@ -37,6 +37,7 @@ public class LikesBusinessService : ILikesBusinessService
         }
         
         var likeEntity = _mapper.Map<DbLike>(request);
+        likeEntity.CreatedAt = DateTime.UtcNow;
         
         await _unitOfWork.Likes.AddAsync(likeEntity, cancellationToken);
     }

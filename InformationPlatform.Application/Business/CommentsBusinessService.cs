@@ -37,6 +37,7 @@ public class CommentsBusinessService : ICommentsBusinessService
         }
 
         var commentEntity = _mapper.Map<DbComment>(request);
+        commentEntity.CreatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Comments.AddAsync(commentEntity,cancellationToken);
     }

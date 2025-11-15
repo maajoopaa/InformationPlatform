@@ -41,7 +41,8 @@ public class MessagesBusinessService : IMessagesBusinessService
         var messageEntity = new DbMessage
         {
             BodyHtml = request.BodyHtml,
-            ChatId = request.ChatId
+            ChatId = request.ChatId,
+            CreatedAt =  DateTime.UtcNow
         };
 
         var imageEntities = await _imagesBusinessService.AddImagesAsync(request.Images, cancellationToken);
