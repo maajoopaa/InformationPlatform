@@ -23,7 +23,7 @@ public class BaseRepository<TEntity, TContext> : IBaseRepository<TEntity>
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task AddRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
+    public virtual async Task AddRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
     {
         await DbSet.AddRangeAsync(entities, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -41,7 +41,7 @@ public class BaseRepository<TEntity, TContext> : IBaseRepository<TEntity>
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
+    public virtual async Task DeleteRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
     {
         DbSet.RemoveRange(entities);
         await _context.SaveChangesAsync(cancellationToken);
