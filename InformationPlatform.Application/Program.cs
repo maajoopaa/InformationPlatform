@@ -20,6 +20,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 //Swagger
 builder.Services
     .AddEndpointsApiExplorer()
@@ -118,6 +128,7 @@ builder.Services.AddTransient<IPermissionsService, PermissionsService>();
 
 var app = builder.Build();
 
+app.UseCors("AllowAngularDev");
 app.UseRouting();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
