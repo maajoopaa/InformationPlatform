@@ -19,10 +19,10 @@ public class CommentsController : ControllerBase
     }
 
     [HttpPost,Authorize]
-    public async Task<IActionResult> AddAsync([FromBody] AddCommentRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<CommentDto>> AddAsync([FromBody] AddCommentRequest request, CancellationToken cancellationToken)
     {
-        await _service.AddCommentAsync(request, cancellationToken);
+        var comment = await _service.AddCommentAsync(request, cancellationToken);
 
-        return Created();
+        return Ok(comment);
     }
 }

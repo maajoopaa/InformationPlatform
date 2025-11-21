@@ -20,11 +20,11 @@ public class MessagesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync([FromBody] SendMessageRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<MessageDto>> AddAsync([FromBody] SendMessageRequest request, CancellationToken cancellationToken)
     {
-        await _service.AddMessageAsync(request, cancellationToken);
+        var message = await _service.AddMessageAsync(request, cancellationToken);
 
-        return Created();
+        return Ok(message);
     }
 
     [HttpDelete]

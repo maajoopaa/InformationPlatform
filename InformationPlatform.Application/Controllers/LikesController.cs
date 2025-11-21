@@ -1,4 +1,5 @@
 ﻿using InformationPlatform.Application.Business.Interfaces;
+using InformationPlatform.Application.Models;
 using InformationPlatform.Application.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ public class LikesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync([FromBody] AddLikeRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<LikeDto>> AddAsync([FromBody] AddLikeRequest request, CancellationToken cancellationToken)
     {
-        await _service.AddLikeAsync(request,cancellationToken);
+        var like = await _service.AddLikeAsync(request,cancellationToken);
 
         return Created();
     }

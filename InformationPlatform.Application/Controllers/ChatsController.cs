@@ -34,11 +34,11 @@ public class ChatsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync([FromBody] CreateChatRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ChatDto>> AddAsync([FromBody] CreateChatRequest request, CancellationToken cancellationToken)
     {
-        await _chatsService.AddChatAsync(request, cancellationToken);
+        var chat = await _chatsService.AddChatAsync(request, cancellationToken);
 
-        return Created();
+        return Ok(chat);
     }
 
     [HttpPut("{chatId:guid}")]

@@ -51,11 +51,11 @@ public class PostsController : ControllerBase
     }
 
     [HttpPost,Authorize]
-    public async Task<IActionResult> AddAsync([FromBody] CreatePostRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<PostDto>> AddAsync([FromBody] CreatePostRequest request, CancellationToken cancellationToken)
     {
-        await _postsService.AddPostAsync(request, cancellationToken);
+        var post = await _postsService.AddPostAsync(request, cancellationToken);
 
-        return Created();
+        return Ok(post);
     }
 
     [HttpDelete("{postId:guid}"),Authorize]
