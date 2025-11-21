@@ -9,6 +9,7 @@ namespace InformationPlatform.Application.Controllers;
 
 [ApiController]
 [Route("authorization")]
+[Produces("application/json")]
 public class AuthorizationController : ControllerBase
 {
     private readonly IAuthorizationBusinessService _service;

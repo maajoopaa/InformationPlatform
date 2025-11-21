@@ -11,20 +11,18 @@ namespace InformationPlatform.Application.Controllers;
 [Authorize]
 [ApiController]
 [Route("chats")]
+[Produces("application/json")]
 public class ChatsController : ControllerBase
 {
     private readonly IChatsBusinessService _chatsService;
     private readonly IMessagesBusinessService _messagesService;
-    private readonly IPermissionsService _permissionsService;
 
     public ChatsController(
         IChatsBusinessService chatsService,
-        IMessagesBusinessService messagesService,
-        IPermissionsService permissionsService)
+        IMessagesBusinessService messagesService)
     {
         _chatsService = chatsService;
         _messagesService = messagesService;
-        _permissionsService = permissionsService;
     }
     
     [HttpGet("{chatId:guid}/messages")]

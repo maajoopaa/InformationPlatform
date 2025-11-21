@@ -8,6 +8,7 @@ namespace InformationPlatform.Application.Controllers;
 [Authorize]
 [ApiController]
 [Route("likes")]
+[Produces("application/json")]
 public class LikesController : ControllerBase
 {
     private readonly ILikesBusinessService _service;

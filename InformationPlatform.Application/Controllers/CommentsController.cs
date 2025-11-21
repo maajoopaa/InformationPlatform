@@ -8,6 +8,7 @@ namespace InformationPlatform.Application.Controllers;
 
 [ApiController]
 [Route("comments")]
+[Produces("application/json")]
 public class CommentsController : ControllerBase
 {
     private readonly ICommentsBusinessService _service;

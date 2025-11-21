@@ -9,6 +9,7 @@ namespace InformationPlatform.Application.Controllers;
 [Authorize]
 [ApiController]
 [Route("messages")]
+[Produces("application/json")]
 public class MessagesController : ControllerBase
 {
     private readonly IMessagesBusinessService _service;

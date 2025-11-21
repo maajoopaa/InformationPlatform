@@ -8,6 +8,7 @@ namespace InformationPlatform.Application.Controllers;
 
 [ApiController]
 [Route("posts")]
+[Produces("application/json")]
 public class PostsController : ControllerBase
 {
     private readonly IPostsBusinessService _postsService;
