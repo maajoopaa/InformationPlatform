@@ -35,7 +35,7 @@ public class LikesBusinessService :BaseBusinessService, ILikesBusinessService
         return _mapper.Map<List<LikeDto>>(likeEntities);
     }
 
-    public async Task AddLikeAsync(AddLikeRequest request, CancellationToken cancellationToken)
+    public async Task<LikeDto> AddLikeAsync(AddLikeRequest request, CancellationToken cancellationToken)
     {
         var postEntity = await _unitOfWork.Posts.GetByIdAsync(request.PostId, cancellationToken);
 
@@ -49,6 +49,8 @@ public class LikesBusinessService :BaseBusinessService, ILikesBusinessService
         likeEntity.CreatedById = UserId;
         
         await _unitOfWork.Likes.AddAsync(likeEntity, cancellationToken);
+        
+        return _mapper.Map<LikeDto>(likeEntity);
     }
 
     public async Task DeleteLikeAsync(Guid likeId, CancellationToken cancellationToken)

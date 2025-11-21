@@ -7,5 +7,5 @@ namespace InformationPlatform.Application.Business.Interfaces;
 public interface ICommentsBusinessService : IBaseBusinessService
 {
     Task<List<CommentDto>> GetCommentsByPostIdAsync(Guid postId, CancellationToken cancellationToken);
-    Task AddCommentAsync(AddCommentRequest request, CancellationToken cancellationToken);
+    Task<CommentDto> AddCommentAsync(AddCommentRequest request, CancellationToken cancellationToken);
 }

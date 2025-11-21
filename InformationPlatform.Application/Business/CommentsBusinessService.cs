@@ -35,7 +35,7 @@ public class CommentsBusinessService :BaseBusinessService, ICommentsBusinessServ
         return _mapper.Map<List<CommentDto>>(commentEntities);
     }
 
-    public async Task AddCommentAsync(AddCommentRequest request, CancellationToken cancellationToken)
+    public async Task<CommentDto> AddCommentAsync(AddCommentRequest request, CancellationToken cancellationToken)
     {
         var postEntity = await _unitOfWork.Posts.GetByIdAsync(request.PostId, cancellationToken);
 
@@ -49,5 +49,7 @@ public class CommentsBusinessService :BaseBusinessService, ICommentsBusinessServ
         commentEntity.CreatedById = UserId;
 
         await _unitOfWork.Comments.AddAsync(commentEntity,cancellationToken);
+        
+        return _mapper.Map<CommentDto>(commentEntity);
     }
 }

@@ -7,6 +7,6 @@ namespace InformationPlatform.Application.Business.Interfaces;
 public interface IMessagesBusinessService : IBaseBusinessService
 {
     Task<List<MessageDto>> GetMessagesByChatIdAsync(Guid chatId, CancellationToken cancellationToken);
-    Task AddMessageAsync(SendMessageRequest request, CancellationToken cancellationToken);
+    Task<MessageDto> AddMessageAsync(SendMessageRequest request, CancellationToken cancellationToken);
     Task DeleteMessagesAsync(List<Guid> messageIds, CancellationToken cancellationToken);
 }

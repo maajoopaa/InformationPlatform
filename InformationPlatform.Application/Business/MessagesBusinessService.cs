@@ -46,7 +46,7 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
         return _mapper.Map<List<MessageDto>>(messageEntities);
     }
 
-    public async Task AddMessageAsync(SendMessageRequest request, CancellationToken cancellationToken)
+    public async Task<MessageDto> AddMessageAsync(SendMessageRequest request, CancellationToken cancellationToken)
     {
         var userPermissions = await _permissionsService
             .GetUserPermissionsAsync("chat", UserId, request.ChatId, cancellationToken);
@@ -76,6 +76,8 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
         messageEntity.Images.AddRange(imageEntities);
         
         await _unitOfWork.Messages.AddAsync(messageEntity, cancellationToken);
+        
+        return _mapper.Map<MessageDto>(messageEntity);
     }
 
     public async Task DeleteMessagesAsync(List<Guid> messageIds, CancellationToken cancellationToken)

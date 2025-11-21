@@ -45,7 +45,7 @@ public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
         return _mapper.Map<List<PostDto>>(postEntities);
     }
 
-    public async Task AddPostAsync(CreatePostRequest request, CancellationToken cancellationToken)
+    public async Task<PostDto> AddPostAsync(CreatePostRequest request, CancellationToken cancellationToken)
     {
         var postEntity = new DbPost
         {
@@ -59,6 +59,8 @@ public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
         postEntity.Images.AddRange(imageEntities);
         
         await _unitOfWork.Posts.AddAsync(postEntity, cancellationToken);
+        
+        return _mapper.Map<PostDto>(postEntity);
     }
 
     public async Task DeletePostAsync(Guid postId, CancellationToken cancellationToken)

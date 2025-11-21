@@ -43,7 +43,7 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
         return _mapper.Map<List<ChatDto>>(chatEntities);
     }
 
-    public async Task AddChatAsync(CreateChatRequest request, CancellationToken cancellationToken)
+    public async Task<ChatDto> AddChatAsync(CreateChatRequest request, CancellationToken cancellationToken)
     {
         request.ParticipantIds.Add(UserId);
         
@@ -62,6 +62,8 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
         chat.Participants.AddRange(participants);
         
         await _unitOfWork.Chats.AddAsync(chat, cancellationToken);
+        
+        return _mapper.Map<ChatDto>(chat);
     }
 
     public async Task UpdateChatAsync(Guid chatId, UpdateChatRequest request, CancellationToken cancellationToken)

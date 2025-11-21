@@ -37,4 +37,11 @@ public class UsersBusinessService :BaseBusinessService, IUsersBusinessService
         
         return _mapper.Map<UserDto>(userEntity);
     }
+
+    public async Task<List<UserDto>> GetAllUsersAsync(CancellationToken cancellationToken)
+    {
+        var userEntities = await _unitOfWork.Users.GetAsync(null, cancellationToken);
+        
+        return _mapper.Map<List<UserDto>>(userEntities);
+    }
 }

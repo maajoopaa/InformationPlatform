@@ -9,4 +9,5 @@ public interface IUsersBusinessService : IBaseBusinessService
 {
     Task<UserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
     Task<UserDto?> GetUserByUsernameAsync(string username, CancellationToken cancellationToken);
+    Task<List<UserDto>> GetAllUsersAsync(CancellationToken cancellationToken);
 }
