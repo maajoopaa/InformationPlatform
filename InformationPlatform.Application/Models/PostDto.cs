@@ -2,6 +2,8 @@
 
 public class PostDto
 {
+    public Guid Id { get; set; }
+    
     public string Title { get; set; } = null!;
 
     public string BodyHtml { get; set; } = null!;
