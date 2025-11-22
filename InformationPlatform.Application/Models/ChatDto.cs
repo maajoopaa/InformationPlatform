@@ -10,6 +10,8 @@ public class ChatDto
     
     public DateTime CreatedAt { get; set; }
     
+    public DateTime LastUsageAt { get; set; }
+    
     public List<UserDto> Participants { get; set; } = [];
 
     public List<MessageDto> Messages { get; set; } = [];

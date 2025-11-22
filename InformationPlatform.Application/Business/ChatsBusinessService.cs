@@ -51,6 +51,8 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
         {
             Title = request.Title,
             IsGroup = request.IsGroup,
+            CreatedAt = DateTime.UtcNow,
+            LastUsageAt = DateTime.UtcNow
         };
 
         var participants = await _unitOfWork.Users.GetAsync(

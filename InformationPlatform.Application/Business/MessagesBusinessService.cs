@@ -79,6 +79,10 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
         messageEntity.Images.AddRange(imageEntities);
         
         await _unitOfWork.Messages.AddAsync(messageEntity, cancellationToken);
+
+        chatEntity.LastUsageAt = DateTime.UtcNow;
+
+        await _unitOfWork.Chats.UpdateAsync(chatEntity, cancellationToken);
         
         return _mapper.Map<MessageDto>(messageEntity);
     }

@@ -10,6 +10,8 @@ public class DbChat : BaseDbEntityWithId
     
     public DateTime CreatedAt { get; set; }
     
+    public DateTime LastUsageAt { get; set; }
+    
     public virtual List<DbUser> Participants { get; set; } = [];
 
     public virtual List<DbMessage> Messages { get; set; } = [];
