@@ -7,6 +7,8 @@ public class DbPost : BaseDbEntityWithId
     public string Title { get; set; } = null!;
 
     public string BodyHtml { get; set; } = null!;
+    
+    public DateTime CreatedAt { get; set; }
 
     public virtual List<DbImage> Images { get; set; } = [];
     

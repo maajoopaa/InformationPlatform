@@ -7,6 +7,8 @@ public class PostDto
     public string Title { get; set; } = null!;
 
     public string BodyHtml { get; set; } = null!;
+    
+    public DateTime CreatedAt { get; set; }
 
     public List<ImageDto> Images { get; set; } = [];
     

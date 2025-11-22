@@ -8,6 +8,8 @@ public class ChatDto
 
     public bool IsGroup { get; set; } = false;
     
+    public DateTime CreatedAt { get; set; }
+    
     public List<UserDto> Participants { get; set; } = [];
 
     public List<MessageDto> Messages { get; set; } = [];

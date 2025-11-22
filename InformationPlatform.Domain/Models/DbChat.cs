@@ -8,6 +8,8 @@ public class DbChat : BaseDbEntityWithId
 
     public bool IsGroup { get; set; }
     
+    public DateTime CreatedAt { get; set; }
+    
     public virtual List<DbUser> Participants { get; set; } = [];
 
     public virtual List<DbMessage> Messages { get; set; } = [];
