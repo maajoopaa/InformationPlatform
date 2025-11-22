@@ -24,7 +24,7 @@ public class LikesController : ControllerBase
     {
         var like = await _service.AddLikeAsync(request,cancellationToken);
 
-        return Created();
+        return Ok(like);
     }
 
     [HttpDelete("{likeId:guid}")]

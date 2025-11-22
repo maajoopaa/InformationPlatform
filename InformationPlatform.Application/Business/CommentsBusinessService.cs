@@ -43,10 +43,13 @@ public class CommentsBusinessService :BaseBusinessService, ICommentsBusinessServ
         {
             throw new NotFoundException("Такого поста не существует.");
         }
+        
+        var user = await _unitOfWork.Users.GetByIdAsync(UserId, cancellationToken);
 
         var commentEntity = _mapper.Map<DbComment>(request);
         commentEntity.CreatedAt = DateTime.UtcNow;
         commentEntity.CreatedById = UserId;
+        commentEntity.CreatedBy = user!;
 
         await _unitOfWork.Comments.AddAsync(commentEntity,cancellationToken);
         

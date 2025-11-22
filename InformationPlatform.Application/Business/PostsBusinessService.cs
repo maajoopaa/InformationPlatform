@@ -47,11 +47,15 @@ public class PostsBusinessService :BaseBusinessService, IPostsBusinessService
 
     public async Task<PostDto> AddPostAsync(CreatePostRequest request, CancellationToken cancellationToken)
     {
+        var user = await _unitOfWork.Users.GetByIdAsync(UserId, cancellationToken);
+        
         var postEntity = new DbPost
         {
             Title = request.Title,
             BodyHtml = request.BodyHtml,
-            CreatedById = UserId
+            CreatedAt = DateTime.UtcNow,
+            CreatedById = UserId,
+            CreatedBy = user!
         };
 
         var imageEntities = await _imagesBusinessService.AddImagesAsync(request.Images, cancellationToken);

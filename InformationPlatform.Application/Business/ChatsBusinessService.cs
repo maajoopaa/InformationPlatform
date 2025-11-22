@@ -51,7 +51,6 @@ public class ChatsBusinessService : BaseBusinessService, IChatsBusinessService
         {
             Title = request.Title,
             IsGroup = request.IsGroup,
-            
         };
 
         var participants = await _unitOfWork.Users.GetAsync(

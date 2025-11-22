@@ -44,9 +44,12 @@ public class LikesBusinessService :BaseBusinessService, ILikesBusinessService
             throw new NotFoundException("Такого поста не существует.");
         }
         
+        var user = await _unitOfWork.Users.GetByIdAsync(UserId, cancellationToken);
+        
         var likeEntity = _mapper.Map<DbLike>(request);
         likeEntity.CreatedAt = DateTime.UtcNow;
         likeEntity.CreatedById = UserId;
+        likeEntity.CreatedBy = user!;
         
         await _unitOfWork.Likes.AddAsync(likeEntity, cancellationToken);
         

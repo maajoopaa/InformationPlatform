@@ -63,12 +63,15 @@ public class MessagesBusinessService :BaseBusinessService, IMessagesBusinessServ
             throw new NotFoundException("Такого чата не существует.");
         }
 
+        var user = await _unitOfWork.Users.GetByIdAsync(UserId, cancellationToken);
+        
         var messageEntity = new DbMessage
         {
             BodyHtml = request.BodyHtml,
             ChatId = request.ChatId,
             CreatedAt =  DateTime.UtcNow,
-            CreatedById = UserId
+            CreatedById = UserId,
+            CreatedBy = user!
         };
 
         var imageEntities = await _imagesBusinessService.AddImagesAsync(request.Images, cancellationToken);
